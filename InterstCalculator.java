@@ -17,9 +17,6 @@ public class InterstCalculator {
         
         //instance of InterestRateCalculator class
         InterestRateCalculator ir = new InterestRateCalculator();
-        //get ir rate
-        System.out.print("Input interest rate: ");
-        ir.setRate(getInputDouble());
         //get inital loan amount
         System.out.print("Input inital ammount: ");
         double ammount = getInputDouble();
@@ -60,11 +57,7 @@ public class InterstCalculator {
 }
 
 class InterestRateCalculator {
-    private double Rate;
-    
-    public void setRate(double percent) {
-        Rate = percent/100;
-    }
+    private static final double RATE = 0.035;
     
     public void calculateMonthlyPayments(double amount, int months) {
         double remainingAmount = amount;
@@ -76,7 +69,7 @@ class InterestRateCalculator {
         // Calculate payments for each month
         for (int month = 1; month <= months; month++) {
             double monthlyPayment = remainingAmount / (months - month + 1);
-            double interestPayment = remainingAmount * Rate / 12; //interest for current payment
+            double interestPayment = remainingAmount * RATE / 12; //interest for current payment
             
             double payment = monthlyPayment + interestPayment;
             totalPaid += payment;
