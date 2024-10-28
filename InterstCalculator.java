@@ -5,6 +5,7 @@
 package com.mycompany.interstcalculator;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -22,7 +23,10 @@ public class InterstCalculator {
         double ammount = getInputDouble();
         //Get # of months and start calculation
         System.out.print("Input the number of months compounded: ");
-        ir.calculateMonthlyPayments(ammount, getInputInt());
+        ArrayList<String> results = ir.calculateMonthlyPayments(ammount, getInputInt());
+        for(String s : results) {
+            System.out.println(s);
+        }
         
     }
     
@@ -59,7 +63,7 @@ public class InterstCalculator {
 class InterestRateCalculator {
     private static final double RATE = 0.035;
     
-    public void calculateMonthlyPayments(double amount, int months) {
+    public ArrayList<String> calculateMonthlyPayments(double amount, int months) {
         double remainingAmount = amount;
         double totalPaid = 0;
         DecimalFormat df = new DecimalFormat("$#,##0.00");
@@ -67,6 +71,7 @@ class InterestRateCalculator {
         System.out.println("\nMonthly Payment Schedule:");
         
         // Calculate payments for each month
+        ArrayList results = new ArrayList<String>();
         for (int month = 1; month <= months; month++) {
             double monthlyPayment = remainingAmount / (months - month + 1);
             double interestPayment = remainingAmount * RATE / 12; //interest for current payment
@@ -75,12 +80,17 @@ class InterestRateCalculator {
             totalPaid += payment;
             remainingAmount -= monthlyPayment; //reduce the principal by the monthly payment
             
-            System.out.println(String.format("Month %d: %s", month, df.format(payment)));
+            //System.out.println(String.format("Month %d: %s", month, df.format(payment)));
+            results.add(String.format("Month %d: %s", month, df.format(payment)));
         }
-
+        
         //output overall results.
-        System.out.println("\nTotal amount paid: " + df.format(totalPaid));
+        /*System.out.println("\nTotal amount paid: " + df.format(totalPaid));
         System.out.println("Original amount borrowed: " + df.format(amount));
-        System.out.println("Total interest paid: " + df.format(totalPaid - amount));
+        System.out.println("Total interest paid: " + df.format(totalPaid - amount));*/
+        results.add("\nTotal amount paid: " + df.format(totalPaid));
+        results.add("Original amount borrowed: " + df.format(amount));
+        results.add("Total interest paid: " + df.format(totalPaid - amount));
+        return results;
     }
 }
